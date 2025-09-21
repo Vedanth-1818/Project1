@@ -101,7 +101,7 @@ const Footer = () => {
         <FooterSection>
           <h3>Support</h3>
           <ul>
-            <li><a href={`mailto:${supportEmail}`}>Contact Us</a></li>
+            <li><a href={`http://127.0.0.1:5000/contact`}>Contact Us</a></li>
             <li><a href="#">FAQ</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms of Service</a></li>

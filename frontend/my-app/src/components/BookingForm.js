@@ -118,21 +118,40 @@ const BookingForm = ({ accommodation, onSubmit, onClose }) => {
     }));
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      onSubmit({
-        ...formData,
-        accommodationId: accommodation.id,
-        accommodationName: accommodation.name,
-        bookingDate: new Date().toISOString(),
-        totalPrice: calculatePrice()
+
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      accommodationId: accommodation.id,
+      accommodationName: accommodation.name,
+      checkIn: formData.checkIn,
+      checkOut: formData.checkOut,
+      guests: Number(formData.guests),
+      roomType: formData.roomType,
+      totalPrice: calculatePrice(),
+    };
+
+    try {
+      const res = await fetch('http://127.0.0.1:5000/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+
+      if (!res.ok) throw new Error('Booking failed');
+
+      const data = await res.json();
+      onSubmit(data);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to create booking. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
   
   const calculatePrice = () => {

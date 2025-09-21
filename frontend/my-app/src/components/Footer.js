@@ -55,7 +55,20 @@ const Copyright = styled.div`
 
 const Footer = () => {
   const [copied, setCopied] = React.useState(false);
-  const supportEmail = 'vvedanth72@gmail.com';
+  const [supportEmail, setSupportEmail] = React.useState('vvedanth72@gmail.com');
+
+  React.useEffect(() => {
+    let mounted = true;
+    fetch('http://127.0.0.1:5000/support')
+      .then(res => res.json())
+      .then(data => {
+        if (mounted && data && data.email) setSupportEmail(data.email);
+      })
+      .catch(() => {
+        // fallback: keep default email
+      });
+    return () => { mounted = false; };
+  }, []);
 
   const handleCopy = async () => {
     try {
